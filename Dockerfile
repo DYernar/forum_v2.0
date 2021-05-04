@@ -10,5 +10,5 @@ CMD ["./forum"]
 
 
 
-#sudo docker build -t aiqap .
-# docker run -d -p 8080:8080 -v ~/go/aiqap-back/audio:/usr/src/app/audio  aiqap
+# docker build -t forum .
+# docker run -d -p 5555:5555 forum
