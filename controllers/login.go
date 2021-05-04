@@ -40,7 +40,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 				} else {
 					response.User = user
 				}
-				u, _ := uuid.NewV4()
+				u := uuid.NewV4()
 				sessionToken := u.String()
 
 				cookie := &http.Cookie{
