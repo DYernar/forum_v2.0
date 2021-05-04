@@ -18,34 +18,87 @@
                     <div class="mdl-grid" style="width: 100%">
                         <div class="mdl-layout-spacer"></div>
                         <div class="mdl-cell mdl-cell--4-col" style="justify-content: center; width: 80%;">
+
+
+                            <form action="/" method="GET">
+                                <input type="text" class="form-control" name="title" id="title" placeholder="поиск..." list="postlist"/>
+                                <button class="btn btn-success" type="submit">
+                                    search
+                                </button>
+                                <datalist id="postlist">
+                                    {{range $post := .Posts}}
+                                    <option value="{{$post.Title}}">{{$post.Title}}</option>
+                                    {{end}}
+                                </datalist>
+                            </form>
+                            <br>
+
+                            
+                            <form action="/" enctype="multipart/form-data" method="GET">
+                                <div class="form-group">
+                                    <input type="checkbox" name="liked">
+                                        <label for="liked">Liked by me</label>
+                                    </div>
+                        
+                                    <div class="form-group">
+                                        <input type="checkbox" name="mypost">
+                                    <label for="mypost">My posts</label>
+                                </div>
+                                <div class="mdl-selectfield mdl-js-selectfield">
+                                    <select class="mdl-selectfield__select" id="category" name="category">
+                                        <option value="movie">movie</option>
+                                        <option value="sport">sport</option>
+                                        <option value="music">music</option>
+                                        <option value="programming">programming</option>
+                                    </select>
+                                    <label class="mdl-selectfield__label" for="category">category</label>
+                                </div>
+                                    <br>
+                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    apply
+                                </button>
+                            </form>
+                            <br>
+                            <form action="/" method="GET">
+                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    reset
+                                </button>
+                            </form>
+
+
+
                             <div class="page-content" style="width: 100%;">
-                                {{range $post := .Posts}}
-                                <div id="postid{{$post.PostID}}" class="mdl-card-square mdl-card mdl-shadow--2dp" style="width: 100%; margin: 20px; padding: 0px;">
-                                    <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
-                                        <div class="mdl-grid" style="width: 100%">
-                                            <div class="mdl-layout-spacer"></div>
-                                            <img  class="mdl-cell mdl-cell--6-col" src="{{$post.Image}}" alt="">
-                                            <div class="mdl-layout-spacer"></div>
-                                        </div>
-                                        <div class="mdl-grid" style="width: 100%">
-                                            <div class="mdl-layout-spacer"></div>
-                                                <h4>{{$post.Title}}</h4>
-                                            <div class="mdl-layout-spacer"></div>
+                                {{if eq (len .Posts) 0}}
+                                <h2>No posts</h2>
+                                {{else}}
+                                    {{range $post := .Posts}}
+                                    <div id="postid{{$post.PostID}}" class="mdl-card-square mdl-card mdl-shadow--2dp" style="width: 100%; margin: 20px; padding: 0px; background: rgb(223, 226, 207);">
+                                        <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
+                                            <div class="mdl-grid" style="width: 100%">
+                                                <div class="mdl-layout-spacer"></div>
+                                                <img  class="mdl-cell mdl-cell--6-col" src="{{$post.Image}}" alt="">
+                                                <div class="mdl-layout-spacer"></div>
+                                            </div>
+                                            <div class="mdl-grid" style="width: 100%">
+                                                <div class="mdl-layout-spacer"></div>
+                                                    <h4>{{$post.Title}}</h4>
+                                                <div class="mdl-layout-spacer"></div>
+                                            </div>
+                                            
+                                            <p>{{$post.Text}}</p>
+                                            <div class="mdl-grid" style="width: 100%">
+                                                <div class="mdl-layout-spacer"></div>
+                                                <a class="mdl-navigation__link" href="/like?id={{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
+                                                <div class="mdl-layout-spacer"></div>
+                                                <a class="mdl-navigation__link" href="/dislike?id={{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
+                                                <div class="mdl-layout-spacer"></div>
+                                                <a class="mdl-navigation__link" href="/post?id={{$post.PostID}}"><i class="material-icons">comment</i>{{len $post.Comments}}</a>
+                                                <div class="mdl-layout-spacer"></div>
+                                            </div>
                                         </div>
                                         
-                                        <p>{{$post.Text}}</p>
-                                        <div class="mdl-grid" style="width: 100%">
-                                            <div class="mdl-layout-spacer"></div>
-                                            <a class="mdl-navigation__link" href="/like?id={{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
-                                            <div class="mdl-layout-spacer"></div>
-                                            <a class="mdl-navigation__link" href="/dislike?id={{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
-                                            <div class="mdl-layout-spacer"></div>
-                                            <a class="mdl-navigation__link" href="/post?id={{$post.PostID}}"><i class="material-icons">comment</i>{{len $post.Comments}}</a>
-                                            <div class="mdl-layout-spacer"></div>
-                                        </div>
                                     </div>
-                                    
-                                </div>
+                                    {{end}}
                                 {{end}}
                              </div>
                         </div>

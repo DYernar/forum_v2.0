@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/dislike", controllers.DislikePost)
 	http.HandleFunc("/comment", controllers.CommentPost)
 	http.HandleFunc("/post", controllers.GetPost)
+	http.HandleFunc("/profile", controllers.ProfilePage)
 
 	fmt.Println("running on port ", port)
 

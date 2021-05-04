@@ -151,6 +151,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	} else {
 		PageNotFound(w, r)
 	}
+
 }
 
 //InvalidPostHandler handler
@@ -224,7 +225,6 @@ func DislikePost(w http.ResponseWriter, r *http.Request) {
 //CommentPost creates comment to the post
 func CommentPost(w http.ResponseWriter, r *http.Request) {
 	username, auth := IsAuthorized(r)
-	fmt.Println("username is ", username)
 	if !auth || username == "" {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
@@ -242,7 +242,6 @@ func CommentPost(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				user = db.GetUserByName(username)
 			}
-			fmt.Println("username is ", user.Username)
 			err = db.CommentPost(user.UserID, postid, text)
 			if err != nil {
 				InternalServerError(w, r)

@@ -3,6 +3,7 @@ package controllers
 import (
 	"html/template"
 	"net/http"
+	"strings"
 
 	"forum_v2.0/db"
 	"forum_v2.0/model"
@@ -22,7 +23,58 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 				response.User = user
 			}
 			response.LoggedIn = loggedIn
-			response.Posts = db.GetAllPosts()
+			allPosts := db.GetAllPosts()
+
+			r.ParseForm()
+			title := r.FormValue("title")
+			category := r.FormValue("category")
+			for i := 0; i < len(allPosts); i++ {
+				if !strings.HasPrefix(strings.ToLower(allPosts[i].Title), strings.ToLower(title)) {
+					allPosts = append(allPosts[:i], allPosts[i+1:]...)
+					i--
+				}
+			}
+
+			if loggedIn {
+				likedbyme := r.FormValue("liked")
+				myposts := r.FormValue("mypost")
+				if likedbyme == "on" {
+					for i := 0; i < len(allPosts); i++ {
+						liked := false
+						for _, likeid := range allPosts[i].Likes {
+							if likeid == response.User.UserID {
+								liked = true
+								break
+							}
+						}
+						if !liked {
+							allPosts = append(allPosts[:i], allPosts[i+1:]...)
+							i--
+						}
+					}
+				}
+
+				if myposts == "on" {
+					for i := 0; i < len(allPosts); i++ {
+						if allPosts[i].UserID != response.User.UserID {
+							allPosts = append(allPosts[:i], allPosts[i+1:]...)
+							i--
+						}
+					}
+				}
+			}
+
+			if category != "" {
+				for i := 0; i < len(allPosts); i++ {
+					if strings.ToLower(allPosts[i].Category) != strings.ToLower(category) {
+						allPosts = append(allPosts[:i], allPosts[i+1:]...)
+						i--
+					}
+				}
+			}
+
+			response.Posts = allPosts
+
 			t := template.Must(template.New("index").ParseFiles("static/index.html", "static/header.html", "static/footer.html"))
 			t.Execute(w, response)
 		} else {
