@@ -34,8 +34,8 @@
                                                 <label class="mdl-textfield__label" for="title">Title</label>
                                             </div>
                                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 100%;">
-                                                <textarea class="mdl-textarea__input" type="text" id="text" name="text" rows="10" style="width: 100%;">{{.Post.Text}}</textarea>
-                                                <label class="mdl-textfield__label" for="text">Text</label>
+                                                <textarea class="mdl-textarea__input" type="text" id="text" name="text" rows="10" style="width: 100%;" placeholder="Text">{{.Post.Text}}</textarea>
+                                                
                                             </div>
 
                                                 <div class="mdl-selectfield mdl-js-selectfield">
@@ -53,7 +53,6 @@
                                                 </div>
                                                 
                                             <div>
-
                                             {{range $error := .Errors}}
                                                 <p style="color: red;">{{$error}}</p>
                                             {{end}}

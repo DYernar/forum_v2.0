@@ -45,7 +45,8 @@
                                     <label for="mypost">My posts</label>
                                 </div>
                                 <div class="mdl-selectfield mdl-js-selectfield">
-                                    <select class="mdl-selectfield__select" id="category" name="category">
+                                    <select class="mdl-selectfield__select" id="category" name="category" >
+                                        <option value="" ></option>
                                         <option value="movie">movie</option>
                                         <option value="sport">sport</option>
                                         <option value="music">music</option>
@@ -55,15 +56,17 @@
                                 </div>
                                     <br>
                                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    apply
+                                    apply filter
                                 </button>
+                                <a href="/">reset filter</a>
+                                
                             </form>
+                            
                             <br>
                             <form action="/" method="GET">
                                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                                     reset
-                                </button>
-                            </form>
+                                </button>нельзя открыть все мои посты. Мешает категория. Можно добавить в список "Все категории" и обойти эту проблему.
 
 
 
@@ -72,32 +75,32 @@
                                 <h2>No posts</h2>
                                 {{else}}
                                     {{range $post := .Posts}}
-                                    <div id="postid{{$post.PostID}}" class="mdl-card-square mdl-card mdl-shadow--2dp" style="width: 100%; margin: 20px; padding: 0px; background: rgb(223, 226, 207);">
-                                        <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
-                                            <div class="mdl-grid" style="width: 100%">
-                                                <div class="mdl-layout-spacer"></div>
-                                                <img  class="mdl-cell mdl-cell--6-col" src="{{$post.Image}}" alt="">
-                                                <div class="mdl-layout-spacer"></div>
-                                            </div>
-                                            <div class="mdl-grid" style="width: 100%">
-                                                <div class="mdl-layout-spacer"></div>
-                                                    <h4>{{$post.Title}}</h4>
-                                                <div class="mdl-layout-spacer"></div>
+                                        <div onclick="location.href='/post?id={{$post.PostID}}';"  id="postid{{$post.PostID}}" class="mdl-card-square mdl-card mdl-shadow--2dp" style="width: 100%; margin: 20px; padding: 0px; background: rgb(223, 226, 207);">
+                                            <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
+                                                <div class="mdl-grid" style="width: 100%">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                    <img  class="mdl-cell mdl-cell--6-col" src="{{$post.Image}}" alt="">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                </div>
+                                                <div class="mdl-grid" style="width: 100%">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                        <h4>{{$post.Title}}</h4>
+                                                    <div class="mdl-layout-spacer"></div>
+                                                </div>
+                                                
+                                                <pre>{{$post.Text}}</pre>
+                                                <div class="mdl-grid" style="width: 100%">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                    <a href="/like?id={{$post.PostID}}&redir=/#id={{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
+                                                    <div class="mdl-layout-spacer"></div>
+                                                    <a  href="/dislike?id={{$post.PostID}}&redir=/#id={{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
+                                                    <div class="mdl-layout-spacer"></div>
+                                                    <a ><i class="material-icons">comment</i>{{len $post.Comments}}</a>
+                                                    <div class="mdl-layout-spacer"></div>
+                                                </div>
                                             </div>
                                             
-                                            <p>{{$post.Text}}</p>
-                                            <div class="mdl-grid" style="width: 100%">
-                                                <div class="mdl-layout-spacer"></div>
-                                                <a class="mdl-navigation__link" href="/like?id={{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
-                                                <div class="mdl-layout-spacer"></div>
-                                                <a class="mdl-navigation__link" href="/dislike?id={{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
-                                                <div class="mdl-layout-spacer"></div>
-                                                <a class="mdl-navigation__link" href="/post?id={{$post.PostID}}"><i class="material-icons">comment</i>{{len $post.Comments}}</a>
-                                                <div class="mdl-layout-spacer"></div>
-                                            </div>
                                         </div>
-                                        
-                                    </div>
                                     {{end}}
                                 {{end}}
                              </div>

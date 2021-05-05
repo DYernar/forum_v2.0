@@ -30,6 +30,22 @@ func (user User) IsValidEmail() bool {
 	return emailRegex.MatchString(user.Email)
 }
 
+//IsValidUsername return true if email is valid
+func (user User) IsValidUsername() bool {
+	fmt.Println(user.Username)
+	if len(user.Username) < 3 || len(user.Username) > 20 {
+		return false
+	}
+	for _, c := range user.Username {
+		fmt.Println(c)
+		if c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z' {
+			return false
+		}
+	}
+
+	return true
+}
+
 //IsValidPassword password validation
 func (user User) IsValidPassword() string {
 	if user.Password == "" {

@@ -22,6 +22,8 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 			postid, _ := strconv.Atoi(r.FormValue("id"))
 			post := db.GetPostByPostID(postid)
 			post.Comments = db.GetCommentsByPostID(postid)
+			post.Likes = db.GetLikesByPostID(postid)
+			post.Dislikes = db.GetDislikesByPostID(postid)
 			response := GetResponse(r)
 			response.Post = post
 			t := template.Must(template.New("post").ParseFiles("static/post.html", "static/header.html", "static/footer.html"))
@@ -61,9 +63,12 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 			post.Category = category
 			post.Date = time.Now().String()
 
-			validPost := post.Validate()
-			if validPost != "" {
-				InvalidPostHandler(w, r, validPost, post)
+			errors := post.Validate()
+			if len(errors) != 0 {
+				response.Post = post
+				response.Errors = errors
+				t := template.Must(template.New("create").ParseFiles("static/create.html", "static/header.html", "static/footer.html"))
+				t.Execute(w, response)
 				return
 			}
 
@@ -189,8 +194,11 @@ func LikePost(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				user = db.GetUserByName(username)
 			}
+
 			db.LikePost(user.UserID, postid, true)
-			http.Redirect(w, r, "/#postid"+r.FormValue("id"), http.StatusSeeOther)
+
+			redir := r.FormValue("redir")
+			http.Redirect(w, r, redir, http.StatusSeeOther)
 		} else {
 			BadRequest(w, r, r.Method+" is not allowed")
 		}
@@ -216,7 +224,9 @@ func DislikePost(w http.ResponseWriter, r *http.Request) {
 				user = db.GetUserByName(username)
 			}
 			db.LikePost(user.UserID, postid, false)
-			http.Redirect(w, r, "/#postid"+r.FormValue("id"), http.StatusSeeOther)
+
+			redir := r.FormValue("redir")
+			http.Redirect(w, r, redir, http.StatusSeeOther)
 		} else {
 			BadRequest(w, r, r.Method+" is not allowed")
 		}

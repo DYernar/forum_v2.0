@@ -38,7 +38,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 				response.Errors = append(response.Errors, "passwords are not same!!!")
 			}
 
-			if len(user.Username) > 1 {
+			if user.IsValidUsername() {
 				usernameExists, err := db.UsernameExists(user.Username)
 				if err != nil {
 					InternalServerError(w, r)
@@ -49,7 +49,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 					response.Errors = append(response.Errors, "username is already in use")
 				}
 			} else {
-				response.Errors = append(response.Errors, "username length should be atleast two letters")
+				response.Errors = append(response.Errors, "username should be an alphanumeric string with length 3 to 20")
 			}
 
 			if user.IsValidEmail() {
