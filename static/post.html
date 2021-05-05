@@ -40,6 +40,7 @@
                                     <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
                                         <div class="mdl-grid" style="width: 100%">
                                             <div class="mdl-layout-spacer"></div>
+                                            {{if .LoggedIn}}
                                             <form class="mdl-cell mdl-cell--8-col" action="/comment?id={{.Post.PostID}}" method="POST">
                                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width: 100%;">
                                                     <textarea class="mdl-textarea__input" type="text" id="text" name="text" rows="10" style="width: 100%;">{{.Comment.Comment}}</textarea>
@@ -56,6 +57,9 @@
                                                     Comment
                                                 </button>
                                             </form>
+                                            {{else}}
+                                            <h3>Sign in to add comment</h3>
+                                            {{end}}
                                             <div class="mdl-layout-spacer"></div>
                                         </div>
                                     </div>

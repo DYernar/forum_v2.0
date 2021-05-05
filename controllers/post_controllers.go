@@ -179,6 +179,7 @@ func LikePost(w http.ResponseWriter, r *http.Request) {
 	username, auth := IsAuthorized(r)
 	if !auth || username == "" {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
 	}
 	if r.URL.Path == "/like" {
 		if r.Method == "GET" {
@@ -203,6 +204,8 @@ func DislikePost(w http.ResponseWriter, r *http.Request) {
 	username, auth := IsAuthorized(r)
 	if !auth || username == "" {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+
 	}
 	if r.URL.Path == "/dislike" {
 		if r.Method == "GET" {
@@ -227,6 +230,8 @@ func CommentPost(w http.ResponseWriter, r *http.Request) {
 	username, auth := IsAuthorized(r)
 	if !auth || username == "" {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+
 	}
 	if r.URL.Path == "/comment" {
 		if r.Method == "POST" {
