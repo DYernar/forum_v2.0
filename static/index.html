@@ -35,15 +35,23 @@
 
                             
                             <form action="/" enctype="multipart/form-data" method="GET">
-                                <div class="form-group">
-                                    <input type="checkbox" name="liked">
-                                        <label for="liked">Liked by me</label>
+                                    <div class="form-group">
+                                        {{ if .LoggedIn}}
+                                        <input type="checkbox" name="liked" >
+                                        {{else}}
+                                        <input type="checkbox" name="liked" disabled>
+                                        {{end}}
+                                        <label for="liked ">Liked by me</label>
                                     </div>
                         
                                     <div class="form-group">
+                                        {{ if .LoggedIn}}
                                         <input type="checkbox" name="mypost">
-                                    <label for="mypost">My posts</label>
-                                </div>
+                                        {{else}}
+                                        <input type="checkbox" name="mypost" disabled>
+                                        {{end}}
+                                        <label for="mypost">My posts</label>
+                                    </div>
                                 <div class="mdl-selectfield mdl-js-selectfield">
                                     <select class="mdl-selectfield__select" id="category" name="category" >
                                         <option value="" ></option>
@@ -66,10 +74,7 @@
                             <form action="/" method="GET">
                                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                                     reset
-                                </button>нельзя открыть все мои посты. Мешает категория. Можно добавить в список "Все категории" и обойти эту проблему.
-
-
-
+                                </button>
                             <div class="page-content" style="width: 100%;">
                                 {{if eq (len .Posts) 0}}
                                 <h2>No posts</h2>
@@ -79,21 +84,23 @@
                                             <div class="mdl-card__supporting-text" style="overflow-wrap: break-word;">
                                                 <div class="mdl-grid" style="width: 100%">
                                                     <div class="mdl-layout-spacer"></div>
-                                                    <img  class="mdl-cell mdl-cell--6-col" src="{{$post.Image}}" alt="">
-                                                    <div class="mdl-layout-spacer"></div>
-                                                </div>
-                                                <div class="mdl-grid" style="width: 100%">
-                                                    <div class="mdl-layout-spacer"></div>
                                                         <h4>{{$post.Title}}</h4>
                                                     <div class="mdl-layout-spacer"></div>
                                                 </div>
                                                 
+                                                <div class="mdl-grid" style="width: 100%">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                    <img  class="mdl-cell mdl-cell--2-col" src="{{$post.Image}}" alt="">
+                                                    <div class="mdl-layout-spacer"></div>
+                                                </div>
+                                                
+                                                
                                                 <pre>{{$post.Text}}</pre>
                                                 <div class="mdl-grid" style="width: 100%">
                                                     <div class="mdl-layout-spacer"></div>
-                                                    <a href="/like?id={{$post.PostID}}&redir=/#id={{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
+                                                    <a href="/like?id={{$post.PostID}}&redir=/#postid{{$post.PostID}}"><i class="material-icons">thumb_up</i>{{len $post.Likes}}</a>
                                                     <div class="mdl-layout-spacer"></div>
-                                                    <a  href="/dislike?id={{$post.PostID}}&redir=/#id={{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
+                                                    <a  href="/dislike?id={{$post.PostID}}&redir=/#postid{{$post.PostID}}"><i class="material-icons">thumb_down</i>{{len $post.Dislikes}}</a>
                                                     <div class="mdl-layout-spacer"></div>
                                                     <a ><i class="material-icons">comment</i>{{len $post.Comments}}</a>
                                                     <div class="mdl-layout-spacer"></div>

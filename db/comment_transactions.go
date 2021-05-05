@@ -94,7 +94,6 @@ func LikeComment(commentid int, like bool, userid int) {
 		likes, err := db.Prepare("insert into commentlikes (commentid, userid, like) values (?, ?, ?)")
 
 		if err != nil {
-			fmt.Println("commentlike insertion err")
 			fmt.Println(err)
 			db.Close()
 			return
